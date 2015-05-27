@@ -87,13 +87,13 @@ class OptimizerFactory
             new Command($this->executable('jpegoptim'), array('--strip-all', '--all-progressive'))
         ));
         $this->optimizers['jpegtran'] = $this->wrap(new CommandOptimizer(
-            new Command($this->executable('jpegtran'), array('-optimize', '-progressive')),
+            new Command($this->executable('jpegtran'), array('-copy none', '-optimize', '-progressive')),
             function ($filepath) {
                 return array('-outfile', $filepath);
             }
         ));
         $this->optimizers['jpeg'] = $this->optimizers['jpg'] = new ChainOptimizer(array(
-            // $this->unwrap($this->optimizers['jpegtran']),
+            $this->unwrap($this->optimizers['jpegtran']),
             $this->unwrap($this->optimizers['jpegoptim']),
         ), true);
 
