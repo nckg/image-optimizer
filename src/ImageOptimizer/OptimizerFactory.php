@@ -28,12 +28,12 @@ class OptimizerFactory
         $this->setOptions($options);
         $this->setUpOptimizers();
     }
-    
+
     private function setOptions(array $options)
     {
         $this->options = $this->getOptionsResolver()->resolve($options);
     }
-    
+
     protected function getOptionsResolver()
     {
         $resolver = new OptionsResolver();
@@ -84,7 +84,7 @@ class OptimizerFactory
         ));
 
         $this->optimizers['jpegoptim'] = $this->wrap(new CommandOptimizer(
-            new Command($this->executable('jpegoptim'), array('--strip-all', '--all-progressiv'))
+            new Command($this->executable('jpegoptim'), array('--strip-all', '--all-progressive'))
         ));
         $this->optimizers['jpegtran'] = $this->wrap(new CommandOptimizer(
             new Command($this->executable('jpegtran'), array('-optimize', '-progressive')),
@@ -93,7 +93,7 @@ class OptimizerFactory
             }
         ));
         $this->optimizers['jpeg'] = $this->optimizers['jpg'] = new ChainOptimizer(array(
-            $this->unwrap($this->optimizers['jpegtran']),
+            // $this->unwrap($this->optimizers['jpegtran']),
             $this->unwrap($this->optimizers['jpegoptim']),
         ), true);
 
@@ -145,4 +145,4 @@ class OptimizerFactory
     {
         return is_callable($default) ? call_user_func($default) : $default;
     }
-} 
+}
